@@ -15,8 +15,8 @@ let row_count = 0
 function setup() {
     console.log("go");
     createCanvas(500, 500);
-    row_count = width / object_size
-    
+    row_count = int(width / object_size)
+    changeColor();
 }
 
 function draw() {
@@ -24,7 +24,7 @@ function draw() {
     push();
     fill(current_color.r,current_color.b,current_color.g);
 
-    for (let i = 0; i < object_size; i++){
+    for (let i = 0; i < row_count; i++){
         switch(current_state){
             case "circle":
                 drawCircleRow(object_size * i);
@@ -40,15 +40,21 @@ function draw() {
 }
 
 function drawCircleRow(cur_y){
-    for(let i = 0; i < object_size; i++){
-        ellipse(object_size * i, cur_y, object_size);
+    for(let i = 0; i < row_count; i++){
+        ellipse((object_size * i) + (object_size/2), cur_y + (object_size/2), object_size);
     }
 }
 
 function drawSquareRow(cur_y){
-    for(let i = 0; i < object_size; i++){
-        rect((object_size * i) - (object_size/2), cur_y - (object_size/2), object_size);
+    for(let i = 0; i < row_count; i++){
+        rect(object_size * i, cur_y, object_size);
     }
+}
+
+function changeColor(){
+    current_color.r = random(0, 255);
+    current_color.b = random(0, 255);
+    current_color.g = random(0, 255);
 }
 
 function mouseClicked() {
@@ -64,8 +70,6 @@ function mouseClicked() {
 
 function keyPressed() {
     if (key === " ") {
-        current_color.r = random(0, 255);
-        current_color.b = random(0, 255);
-        current_color.g = random(0, 255);
+        changeColor();
     }
 }
