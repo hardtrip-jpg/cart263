@@ -73,64 +73,72 @@ function setup() {
     /*************************************** */
     /*** START PART TWO MODIFY */
     /*************************************** */
-    /* 1: Select the first paragraph and replace the text within the paragraph... */
-    /***CODE */
-    all_paragraph_elements[0].innerHTML = 'New text in paragraph one: text changed by Jeremy on the following date: Jan 23rd 2025.';
+    // /* 1: Select the first paragraph and replace the text within the paragraph... */
+    // /***CODE */
 
-    /*************************************** */
-    /* 2: Select all elements in the HTML that have the class name content-container
-     and change the background color ... of first and second ...*/
-    /***CODE */
-    let all_content_container = document.querySelectorAll(".content-container");
-    console.log(all_content_container);
-    all_content_container[0].style.backgroundColor = "orange";
-    all_content_container[1].style.backgroundColor = "purple";
+    // all_paragraph_elements[0].innerHTML = 'New text in paragraph one: text changed by Jeremy on the following date: Jan 23rd 2025.';
 
+    // /*************************************** */
+    // /* 2: Select all elements in the HTML that have the class name content-container
+    //  and change the background color ... of first and second ...*/
+    // /***CODE */
 
-    /*************************************** */
-    /* 3: Change the src element of the first image element on the page to be ...
-    /***CODE */
-    let image_to_change = document.querySelector("img");
-    image_to_change.src = "task-1-images/seven.png";
+    // let all_content_container = document.querySelectorAll(".content-container");
+    // console.log(all_content_container);
+    // all_content_container[0].style.backgroundColor = "orange";
+    // all_content_container[1].style.backgroundColor = "purple";
 
 
-    /*************************************** */
-    /* 4: Select the third paragraph element on the page and 
-    replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`
-    /***CODE */
-    let third_paragraph = all_paragraph_elements[2];
-    let text_to_add = "<h2>TEST 123</h2>";
-    third_paragraph.innerHTML = text_to_add;
+    // /*************************************** */
+    // /* 3: Change the src element of the first image element on the page to be ...
+    // /***CODE */
 
-    /*************************************** */
-    /* 5: Select the fourth paragraph element on the page and 
-    add to the existing content an h2 element containing the text `TEST 123`
-    /***CODE */
-    let fourth_paragraph = all_paragraph_elements[3];
-    fourth_paragraph.innerHTML += text_to_add;
-
-    /*************************************** */
-    /* 6: Select the fifth paragraph element on the page and add to the existing content 
-    an img element that holds `one.png`, and add the class newStyle to said paragraph element.
-    /***CODE */
-    let fifth_paragraph = all_paragraph_elements[4];
-    fifth_paragraph.innerHTML += `<img src="task-1-images/one.png">`;
-    fifth_paragraph.className = "newStyle";
-    console.log(fifth_paragraph);
+    // let image_to_change = document.querySelector("img");
+    // image_to_change.src = "task-1-images/seven.png";
 
 
-    /*************************************** */
-    /* 7: Add the following array variable: let colors = ['red','blue','green','orange'];, 
-    then access all elements with class name inner-container and save to a variable called `innerContainers`. 
-    Next, iterate over the colors array, and for each color: 
-    assign the element from innerContainers variable with the same index 
-    (i.e. colors[0] should be allocated to the first innerContainers element, colors[1] to the second, etc ...) 
-    a background using that color.
-    /***CODE */
-    let colors = ['red','blue','green','orange'];
-    for(let i = 0; i < colors.length; i++){
-        all_class_inner[i].style.backgroundColor = colors[i]
-    }
+    // /*************************************** */
+    // /* 4: Select the third paragraph element on the page and 
+    // replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`
+    // /***CODE */
+
+    // let third_paragraph = all_paragraph_elements[2];
+    // let text_to_add = "<h2>TEST 123</h2>";
+    // third_paragraph.innerHTML = text_to_add;
+
+    // /*************************************** */
+    // /* 5: Select the fourth paragraph element on the page and 
+    // add to the existing content an h2 element containing the text `TEST 123`
+    // /***CODE */
+
+    // let fourth_paragraph = all_paragraph_elements[3];
+    // fourth_paragraph.innerHTML += text_to_add;
+
+    // /*************************************** */
+    // /* 6: Select the fifth paragraph element on the page and add to the existing content 
+    // an img element that holds `one.png`, and add the class newStyle to said paragraph element.
+    // /***CODE */
+
+    // let fifth_paragraph = all_paragraph_elements[4];
+    // fifth_paragraph.innerHTML += `<img src="task-1-images/one.png">`;
+    // fifth_paragraph.className = "newStyle";
+    // console.log(fifth_paragraph);
+
+
+    // /*************************************** */
+    // /* 7: Add the following array variable: let colors = ['red','blue','green','orange'];, 
+    // then access all elements with class name inner-container and save to a variable called `innerContainers`. 
+    // Next, iterate over the colors array, and for each color: 
+    // assign the element from innerContainers variable with the same index 
+    // (i.e. colors[0] should be allocated to the first innerContainers element, colors[1] to the second, etc ...) 
+    // a background using that color.
+    // /***CODE */
+
+    // let colors = ['red','blue','green','orange'];
+    // let innerContainers = all_class_inner
+    // for(let i = 0; i < colors.length; i++){
+    //     innerContainers[i].style.backgroundColor = colors[i]
+    // }
 
     /*************************************** */
     /*** END PART TWO MODIFY */
@@ -150,11 +158,27 @@ function setup() {
     /* 1H: Iterate through the allPTagsThree array and call customCreateElement(), 
     passing the current allPTagsThree element as the parent with each iteration.*/
     /***CODE */
+    let allPTagsThree = document.querySelectorAll("p");
+
+    function customCreateElement(parent){
+        let paragraphElement = document.createElement("p")
+        paragraphElement.innerHTML = "using create Element"
+        paragraphElement.style.backgroundColor = "green"
+        paragraphElement.style.color = "white"
+        parent.appendChild(paragraphElement)
+    }
+
+    for(let pTag of allPTagsThree){
+        customCreateElement(pTag)
+    }
+
 
 
     /***EXPLANATION::
+     * With this code, we add a new paragraph inside all paragraph elements that has the text using create Element. 
+     * Due to the different background color, it looks like the white text is inside a green box underneath the original text of the parent paragraph element.
      * 
-     * 
+     * task-1-reference-images/part_3_task_1.png
      */
 
     /*************************************** */
@@ -178,10 +202,43 @@ function setup() {
         otherwise lat it have the content `ODD`.*/
 
     /***CODE */
+    function customNewBoxCreate(parent){
+        let newBox = document.createElement("div");
+        newBox.className = "testDiv";
+        parent.appendChild(newBox);
+        return newBox;
+    }
+
+    let rowAmount = 9;
+    let columnAmount = 9;
+
+    let new_div_id = document.querySelector("#new-grid");
+
+    for(let i = 0; i <= columnAmount; i++){
+        for(let x = 0; x <= rowAmount; x++){
+            let returnedDiv = customNewBoxCreate(new_div_id);
+            returnedDiv.style.left = `${x * 40}px`;
+            returnedDiv.style.top = `${i * 40}px`;
+            if (i % 2 == 0){
+                returnedDiv.style.backgroundColor = "white";
+                returnedDiv.innerText = "EVEN";
+            }
+            else{
+                returnedDiv.style.backgroundColor = "cornflowerblue";
+                returnedDiv.innerText = "ODD";
+            }
+        
+        }
+    }
+    console.log(document.querySelectorAll(".testDiv"))
 
 
     /***EXPLANATION::
-     * 
+     * 100 elements are returned when printing out all elements with class name testDiv.
+     * This occurs because 10 rows * 10 columns equals 100. 
+     * First we loop through all the columns, and inside those columns we loop through all the rows.
+     * To determine the even odd, we use modulo which is like division but returns the remainder.
+     * With this, we can assume any even number divided by 2 will not return a remainder.
      * 
      */
 
@@ -200,10 +257,32 @@ function setup() {
         when dividing by three. */
 
     /***CODE */
+    let new_grid_three = document.querySelector("#new-grid-three");
+
+    for(let i = 0; i <= columnAmount; i++){
+        for(let x = 0; x <= rowAmount; x++){
+            let returnedDiv = customNewBoxCreate(new_grid_three);
+            returnedDiv.style.left = `${x * 40}px`;
+            returnedDiv.style.top = `${i * 40}px`;
+            if (x % 3 == 0){
+                returnedDiv.style.backgroundColor = "red";
+            }
+            else if(x % 3 == 1){
+                returnedDiv.style.backgroundColor = "orange";
+            }
+            else if(x % 3 == 2){
+                returnedDiv.style.backgroundColor = "yellow";
+            }
+            returnedDiv.innerText = `${x % 3}`
+        
+        }
+    }
 
 
     /***EXPLANATION::
-     * 
+     *Essentially  copy pasted my code but changed which parameter I'm sending to customNewBoxCreate.
+     *As explained earlier, I am using the modulo operator to return a remainder.
+     *Then with that remainder I'm assigning a colour to each div.
      * 
      */
 
