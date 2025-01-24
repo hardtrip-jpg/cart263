@@ -2,44 +2,44 @@ window.onload = setup;
 
 /** function setup */
 function setup() {
-    console.log("we are a go!")
+    console.log("we are a go!");
     /*** ALL ANWSERS TO BE ADDED IN THE ALLOCATED SPACE */
     /*** START PART ONE ACCESS */
     /* 1: all paragraph elements */
     /***CODE */
-    let all_paragraph_elements = document.querySelectorAll("p")
+    let all_paragraph_elements = document.querySelectorAll("p");
     /***OUTPUT: 
      * 
      */
-    console.log(all_paragraph_elements)
+    console.log(all_paragraph_elements);
 
     /*************************************** */
     /* 2: only the first paragraph element */
     /***CODE */
-    let first_paragraph_element = document.querySelector("p")
+    let first_paragraph_element = document.querySelector("p");
     /***OUTPUT: 
      * 
      */
-    console.log(first_paragraph_element)
+    console.log(first_paragraph_element);
 
     /*************************************** */
     /* 3: all elements with the class inner-container */
     /***CODE */
-    let all_class_inner = document.querySelectorAll(".inner-container")
+    let all_class_inner = document.querySelectorAll(".inner-container");
     /***OUTPUT: 
      * 
      */
-    console.log(all_class_inner)
+    console.log(all_class_inner);
 
     /*************************************** */
     /* 4: the last image element inside the element that has the class img-container */
     /***CODE */
-    let all_img = document.querySelectorAll(".img-container")
-    let final_image = all_img[all_img.length - 1].querySelector("img")
+    let all_img = document.querySelectorAll(".img-container");
+    let final_image = all_img[all_img.length - 1].querySelector("img");
     /***OUTPUT: 
      * 
      */
-    console.log(final_image)
+    console.log(final_image);
 
 
     /*************************************** */
@@ -47,24 +47,24 @@ function setup() {
     /* 5B: length of the list in 5A */
     /* 5C: the text content of the first element in the list from 5A */
     /***CODE */
-    let all_h2 = document.querySelectorAll("h2")
-    let text_length = all_h2.length
-    let h2_text = all_h2[0].innerHTML
+    let all_h2 = document.querySelectorAll("h2");
+    let text_length = all_h2.length;
+    let h2_text = all_h2[0].innerHTML;
     /***OUTPUT: 
      * 
      */
-    console.log(all_h2)
-    console.log(text_length)
-    console.log(h2_text)
+    console.log(all_h2);
+    console.log(text_length);
+    console.log(h2_text);
 
     /*************************************** */
     /* 6: the element with id name parent */
     /***CODE */
-    let id_parent = document.querySelector("#parent")
+    let id_parent = document.querySelector("#parent");
     /***OUTPUT: 
      * 
      */
-    console.log(id_parent)
+    console.log(id_parent);
 
     /*************************************** */
     /*** END PART ONE ACCESS */
@@ -75,37 +75,48 @@ function setup() {
     /*************************************** */
     /* 1: Select the first paragraph and replace the text within the paragraph... */
     /***CODE */
-    all_paragraph_elements[0].innerHTML = 'New text in paragraph one: text changed by Jeremy on the following date: Jan 23rd 2025.'
+    all_paragraph_elements[0].innerHTML = 'New text in paragraph one: text changed by Jeremy on the following date: Jan 23rd 2025.';
 
     /*************************************** */
     /* 2: Select all elements in the HTML that have the class name content-container
      and change the background color ... of first and second ...*/
     /***CODE */
-    let all_content_container = document.querySelectorAll(".content-container")
-    console.log(all_content_container)
-    all_content_container[0].style.backgroundColor = "orange"
-    all_content_container[1].style.backgroundColor = "purple"
+    let all_content_container = document.querySelectorAll(".content-container");
+    console.log(all_content_container);
+    all_content_container[0].style.backgroundColor = "orange";
+    all_content_container[1].style.backgroundColor = "purple";
 
 
     /*************************************** */
     /* 3: Change the src element of the first image element on the page to be ...
     /***CODE */
-    all_img[0].src = "seven.png"
+    let image_to_change = document.querySelector("img");
+    image_to_change.src = "task-1-images/seven.png";
+
 
     /*************************************** */
     /* 4: Select the third paragraph element on the page and 
     replace the content (within the paragraph) to be an h2 element which contains the text `TEST 123`
     /***CODE */
+    let third_paragraph = all_paragraph_elements[2];
+    let text_to_add = "<h2>TEST 123</h2>";
+    third_paragraph.innerHTML = text_to_add;
 
     /*************************************** */
     /* 5: Select the fourth paragraph element on the page and 
     add to the existing content an h2 element containing the text `TEST 123`
     /***CODE */
+    let fourth_paragraph = all_paragraph_elements[3];
+    fourth_paragraph.innerHTML += text_to_add;
 
     /*************************************** */
     /* 6: Select the fifth paragraph element on the page and add to the existing content 
     an img element that holds `one.png`, and add the class newStyle to said paragraph element.
     /***CODE */
+    let fifth_paragraph = all_paragraph_elements[4];
+    fifth_paragraph.innerHTML += `<img src="task-1-images/one.png">`;
+    fifth_paragraph.className = "newStyle";
+    console.log(fifth_paragraph);
 
 
     /*************************************** */
@@ -116,6 +127,10 @@ function setup() {
     (i.e. colors[0] should be allocated to the first innerContainers element, colors[1] to the second, etc ...) 
     a background using that color.
     /***CODE */
+    let colors = ['red','blue','green','orange'];
+    for(let i = 0; i < colors.length; i++){
+        all_class_inner[i].style.backgroundColor = colors[i]
+    }
 
     /*************************************** */
     /*** END PART TWO MODIFY */
