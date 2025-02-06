@@ -92,15 +92,52 @@ function setup_E() {
   function aniA(parentCanvas) {
     console.log("in A");
 
-    window.requestAnimationFrame(animation_a)
 
-    function animation_a() {
+
+    let speedX = 1;
+    let speedY = 2;
+    let size = 10;
+    let p_color = "green"
+
+    let p = document.createElement("div")
+    p.style.width = size + "px"
+    p.style.height = size + "px"
+    p.style.left = "0px"
+    p.style.top = "0px"
+    p.style.position = "absolute"
+    p.style.background = p_color
+    p.style.transform = "translate{-50%, -50%}"
+    p.id = "particle"
+    parentCanvas.appendChild(p)
+
+
+    window.requestAnimationFrame(animate);
+
+    function animate() {
+      p.style.left = parseFloat(p.style.left) + speedX + "px";
+      p.style.top = parseFloat(p.style.top) + speedY + "px";
+      window.requestAnimationFrame(animate);
+
+      let bounds = parentCanvas.getBoundingClientRect();
+
+
+      if (parseInt(p.style.left) > (bounds.width - size) || parseInt(p.style.left) < 0) {
+        speedX *= -1;
+        bounced()
+      }
+      else if (parseInt(p.style.top) > (bounds.height - size) || parseInt(p.style.top) < 0) {
+        speedY *= -1;
+        bounced()
+      }
 
     }
 
-
-
-
+    function bounced() {
+      size += 10
+      p.style.width = size + "px"
+      p.style.height = size + "px"
+      p.style.left = parseFloat(p.style.left) + speedX * size + "px";
+    }
 
 
 
