@@ -92,6 +92,11 @@ function setup_E() {
   function aniA(parentCanvas) {
     console.log("in A");
 
+    window.requestAnimationFrame(animation_a)
+
+    function animation_a() {
+
+    }
 
 
 
