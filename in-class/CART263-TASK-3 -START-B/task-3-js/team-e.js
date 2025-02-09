@@ -92,12 +92,99 @@ function setup_E() {
   function aniA(parentCanvas) {
     console.log("in A");
 
+    let distanceToMouse = 10
 
 
+    let velocity = [1,1];
+    let speedX = 1;
+    let speedY = 2;
+    let sizeWidth = 70;
+    let sizeHeight = 40;
+    let p_color = getRandomColour()
+
+    let p = document.createElement("div")
+
+    p.style.width = sizeWidth + "px"
+    p.style.height = sizeHeight + "px"
+    p.style.left = "0px"
+    p.style.top = "0px"
+    p.style.position = "absolute"
+    p.style.background = p_color
+    p.style.border = "ridge"
+    p.style.borderColor = "black"
+    p.style.textAlign = "center"
+    p.style.fontSize = "15px"
+    p.innerText = "Don't Touch Me"
+    parentCanvas.appendChild(p)
 
 
+    window.requestAnimationFrame(animate);
+    p.addEventListener('mousemove', function(event){
+      speedX *= 1.1;
+      speedY *= 1.1;
+    })
+ 
+    function animate() {
+      p.style.left = parseFloat(p.style.left) + (speedX * velocity[0]) + "px";
+      p.style.top = parseFloat(p.style.top) + (speedY * velocity[1]) + "px";
+      window.requestAnimationFrame(animate);
+
+      testBounds()
+
+      if (speedX > 10){
+        stopWait()
+      }
 
 
+    }
+
+    function testBounds(){
+      let bounds = parentCanvas.getBoundingClientRect();
+
+      if (parseInt(p.style.left) + sizeWidth> (bounds.width)) {
+        velocity[0] = -1;
+        bounced();
+      }
+      else if(parseInt(p.style.left) < 0){
+        velocity[0] = 1;
+        bounced();
+      }
+
+      if (parseInt(p.style.top) + sizeHeight> (bounds.height) ) {
+        velocity[1] = -1;
+        bounced();
+      }
+      else if (parseInt(p.style.top) < 0){
+        velocity[1] = 1;
+        bounced();
+      }
+    }
+
+    function getRandomColour(){
+      var letters = '0123456789ABCDEF';
+      var colour = '#';
+      for (let i = 0; i < 6; i++){
+        colour += letters[Math.floor(Math.random() * 16)]
+      }
+      return colour;
+    }
+
+    function bounced(){
+      p_color = getRandomColour()
+      p.style.background = p_color
+      console.log(velocity)
+    }
+
+    function stopWait(){
+      speedX = 0;
+      speedY = 0;
+      p.innerText = "Please let me be"
+      window.setTimeout(() => {
+        speedX = 1;
+        speedY = 2;
+        p.innerText = "Don't touch me"
+      }, 2000);
+    }
 
 
   }
