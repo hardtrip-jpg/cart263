@@ -213,22 +213,30 @@ function setup_E() {
 
     let speedX = 2;
     let speedY = 3;
-    let size = 10;
+    let sizeWidth = 70;
+    let sizeHeight = 40;
 
     let p = document.createElement("div");
 
     let resumeSpeedX = 2;
     let resumeSpeedY = 3;
-    
+
     parentCanvas.appendChild(p);
-    p.style.width = size + "px";
-    p.style.height = size + "px";
+    p.style.width = sizeWidth + "px";
+    p.style.height = sizeHeight + "px";
     p.style.position = "absolute";
-    p.style.backgroundColor = "black";
+    p.style.left = parentCanvas.offsetWidth / 2 + "px";
+    p.style.top = parentCanvas.offsetHeight / 2 + "px";
     p.style.transform = "translate(-50%, -50%)";
-    
+    p.style.background = "black";
+    p.style.border = "ridge";
+    p.style.borderColor = "white";
+    p.style.textAlign = "center";
+    p.style.fontSize = "15px";
+    p.innerText = "ughhh";
+
     // toggle pause and resume on click
-    window.addEventListener("click", function() {
+    window.addEventListener("click", function () {
       if (speedX === 0 && speedY === 0) {
         resume();
       } else {
@@ -236,36 +244,54 @@ function setup_E() {
       }
     });
 
+    let velocity = [1, 1]; // Add velocity for aniB
+
     function animate() {
-      let rect = parentCanvas.getBoundingClientRect();
-      let x = parseInt(p.style.left) || 0;
-      let y = parseInt(p.style.top) || 0;
-      if (x + size > rect.width || x < 0) {
-        speedX *= -1;
-      }
-      if (y + size > rect.height || y < 0) {
-        speedY *= -1;
-      }
-      x += speedX;
-      y += speedY;
-      p.style.left = x + "px";
-      p.style.top = y + "px";
+      p.style.left = parseFloat(p.style.left) + speedX * velocity[0] + "px";
+      p.style.top = parseFloat(p.style.top) + speedY * velocity[1] + "px";
       window.requestAnimationFrame(animate);
-      
+
+      testBounds(); // Use the same testBounds function
+
+    }
+
+    function testBounds() {
+      let bounds = parentCanvas.getBoundingClientRect();
+      let elementRect = p.getBoundingClientRect();
+
+      // Calculate the element's position relative to the parent
+      let elementLeft = elementRect.left - bounds.left;
+      let elementTop = elementRect.top - bounds.top;
+
+
+      if (elementLeft + sizeWidth > bounds.width) {
+        velocity[0] = -1;
+      } else if (elementLeft < 0) {
+        velocity[0] = 1;
+      }
+
+      if (elementTop + sizeHeight > bounds.height) {
+        velocity[1] = -1;
+      } else if (elementTop < 0) {
+        velocity[1] = 1;
+      }
     }
 
     function pause() {
-      // pause for a second and then resume 
+      // pause for a second and then resume
       resumeSpeedX = speedX;
       resumeSpeedY = speedY;
       speedX = 0;
       speedY = 0;
-      // animate size based on sine wave
-      window.setInterval(function() {
-        size = 10 + 5 * Math.sin(Date.now() / 100);
-        p.style.width = size + "px";
-        p.style.height = size + "px";
+
+      window.setInterval(function () {
+        sizeWidth = 70 + Math.sin(Date.now() / 100) * 10;
+        sizeHeight = 40 + Math.sin(Date.now() / 100) * 10;
+        p.style.width = sizeWidth + "px";
+        p.style.height = sizeHeight + "px";
       }, 100);
+
+      p.innerText = "man whatever";
     }
 
     function resume() {
@@ -277,17 +303,18 @@ function setup_E() {
       speedY = resumeSpeedY;
 
       if (randomX < 0.5) {
-        speedX = speedX * -1;
+        velocity[0] = velocity[0] * -1;
       }
       if (randomY < 0.5) {
-        speedY = speedY * -1;
+        velocity[1] = velocity[1] * -1;
       }
 
       // randomize background color
-      let randomColor = Math.floor(Math.random()*16777215).toString(16);
+      let randomColor = Math.floor(Math.random() * 16777215).toString(16);
       parentCanvas.style.backgroundColor = "#" + randomColor;
-    }
 
+      p.innerText = "ughhh";
+    }
   }
   /**************** ANI C ************************************ */
   /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN C INSIDE  HERE */
