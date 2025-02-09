@@ -209,11 +209,112 @@ function setup_E() {
   function aniB(parentCanvas) {
     console.log("in B");
 
+    window.requestAnimationFrame(animate);
+
+    let speedX = 2;
+    let speedY = 3;
+    let sizeWidth = 70;
+    let sizeHeight = 40;
+
+    let p = document.createElement("div");
+
+    let resumeSpeedX = 2;
+    let resumeSpeedY = 3;
+
+    parentCanvas.appendChild(p);
+    p.style.width = sizeWidth + "px";
+    p.style.height = sizeHeight + "px";
+    p.style.position = "absolute";
+    p.style.left = parentCanvas.offsetWidth / 2 + "px";
+    p.style.top = parentCanvas.offsetHeight / 2 + "px";
+    p.style.transform = "translate(-50%, -50%)";
+    p.style.background = "black";
+    p.style.border = "ridge";
+    p.style.borderColor = "white";
+    p.style.textAlign = "center";
+    p.style.fontSize = "15px";
+    p.innerText = "ughhh";
+
+    // toggle pause and resume on click
+    window.addEventListener("click", function () {
+      if (speedX === 0 && speedY === 0) {
+        resume();
+      } else {
+        pause();
+      }
+    });
+
+    let velocity = [1, 1]; // Add velocity for aniB
+
+    function animate() {
+      p.style.left = parseFloat(p.style.left) + speedX * velocity[0] + "px";
+      p.style.top = parseFloat(p.style.top) + speedY * velocity[1] + "px";
+      window.requestAnimationFrame(animate);
+
+      testBounds(); // Use the same testBounds function
+
+    }
+
+    function testBounds() {
+      let bounds = parentCanvas.getBoundingClientRect();
+      let elementRect = p.getBoundingClientRect();
+
+      // Calculate the element's position relative to the parent
+      let elementLeft = elementRect.left - bounds.left;
+      let elementTop = elementRect.top - bounds.top;
 
 
+      if (elementLeft + sizeWidth > bounds.width) {
+        velocity[0] = -1;
+      } else if (elementLeft < 0) {
+        velocity[0] = 1;
+      }
 
+      if (elementTop + sizeHeight > bounds.height) {
+        velocity[1] = -1;
+      } else if (elementTop < 0) {
+        velocity[1] = 1;
+      }
+    }
 
+    function pause() {
+      // pause for a second and then resume
+      resumeSpeedX = speedX;
+      resumeSpeedY = speedY;
+      speedX = 0;
+      speedY = 0;
 
+      window.setInterval(function () {
+        sizeWidth = 70 + Math.sin(Date.now() / 100) * 10;
+        sizeHeight = 40 + Math.sin(Date.now() / 100) * 10;
+        p.style.width = sizeWidth + "px";
+        p.style.height = sizeHeight + "px";
+      }, 100);
+
+      p.innerText = "man whatever";
+    }
+
+    function resume() {
+      // randomize direction
+      let randomX = Math.random();
+      let randomY = Math.random();
+
+      speedX = resumeSpeedX;
+      speedY = resumeSpeedY;
+
+      if (randomX < 0.5) {
+        velocity[0] = velocity[0] * -1;
+      }
+      if (randomY < 0.5) {
+        velocity[1] = velocity[1] * -1;
+      }
+
+      // randomize background color
+      let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+      parentCanvas.style.backgroundColor = "#" + randomColor;
+
+      p.innerText = "ughhh";
+    }
   }
   /**************** ANI C ************************************ */
   /** PUT ALL YOUR CODE FOR INTERACTIVE PATTERN C INSIDE  HERE */
