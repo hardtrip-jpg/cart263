@@ -3,6 +3,8 @@ window.onload = function () {
   let garden = {
     // An array to store the individual flowers
     flowers: [],
+    // An array to the individual birds
+    birds: [],
     // How many flowers in the garden
     numFlowers: 20,
     /*grass object */
@@ -74,6 +76,14 @@ window.onload = function () {
   window.addEventListener("keydown", function handleKeyDown(event) {
     //call the handleKeyDown method of class
     sun.handleKeyDownInSUn(event);
+
+    //add bird
+    if (event.key == "Enter") {
+      let newBird = new Bird();
+      newBird.Bird();
+      garden.birds.push(newBird);
+      console.log(garden.birds);
+    }
   });
 
 }
