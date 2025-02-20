@@ -5,6 +5,8 @@ window.onload = function () {
     flowers: [],
     // How many flowers in the garden
     numFlowers: 20,
+    // birds
+    birds: [],
     /*grass object */
     grass: {
       // The color of the grass (background)
@@ -75,6 +77,10 @@ window.onload = function () {
     //call the handleKeyDown method of class
     sun.handleKeyDownInSUn(event);
   });
+
+
+  let bird = new Bird(500, 100, 20, 20, "red");
+  bird.Bird();
 
 }
 
