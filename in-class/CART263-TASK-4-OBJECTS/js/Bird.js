@@ -8,12 +8,24 @@ class Bird {
         if (color) {
             this.color = color;
         }
-        this.birdDiv = document.createElement('div');
-
 
     }
 
     Bird() {
+        this.birdDiv = document.createElement('div')
+        this.birdDiv.style.position = 'absolute';
+        this.birdDiv.style.width = this.width + 'px';
+        this.birdDiv.style.height = this.height + 'px';
+
+        this.birdDiv.style.left = this.x + 'px';
+        this.birdDiv.style.top = this.y + 'px';
+
+        // image of the bird from the assets folder
+        this.birdDiv.style.backgroundImage = 'url(assets/Eagle-png-transparent-background-free-download.png)';
+        this.birdDiv.style.backgroundSize = 'cover';
+
+        // add the bird to the DOM
+        document.body.appendChild(this.birdDiv);
 
     }
 
