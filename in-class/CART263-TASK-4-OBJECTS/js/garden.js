@@ -82,7 +82,6 @@ window.onload = function () {
     //add bird
     if (event.key == "Enter") {
       let newBird = new Bird();
-      newBird.Bird();
       garden.birds.push(newBird);
       console.log(garden.birds);
     }
