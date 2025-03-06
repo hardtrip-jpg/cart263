@@ -1,5 +1,9 @@
 window.onload = go_all_stuff;
 
+
+// Declare globally so it's accessible in setupMicrophone()
+let rectObj; 
+
 function go_all_stuff() {
     console.log("go");
 
@@ -81,6 +85,67 @@ function go_all_stuff() {
      * -> the code for the microphone has NOT been added  - you need to implement it correctly...
      *  
      */
+
+// Asynchronous function to initialize microphone input and process audio data
+async function setupMicrophone() {
+    try {
+        // Request access to the user's microphone
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        // Create an audio context for processing sound
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Create an analyser node to extract audio features
+        const analyser = audioContext.createAnalyser();
+        
+        // Create a media stream source from the microphone input
+        const source = audioContext.createMediaStreamSource(stream);
+        
+        // Connect the source to the analyser
+        source.connect(analyser);
+
+        // Set FFT (Fast Fourier Transform) size for frequency analysis
+        analyser.fftSize = 256;
+
+        // Create a buffer to store frequency data
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        // Function to continuously update the visualization based on microphone input
+        function updateFromMic() {
+            // Get frequency data from the analyser
+            analyser.getByteFrequencyData(dataArray);
+
+            // Compute the average volume level
+            let volume = dataArray.reduce((a, b) => a + b) / bufferLength;
+
+            // Modify the visual representation based on volume
+            if (rectObj) {
+                // Adjust width dynamically with volume
+                rectObj.width = 50 + volume * 2;  
+                
+                // Oscillate height slightly over time
+                rectObj.height = 70 + Math.sin(Date.now() * 0.005) * 10;  
+                
+                // Adjust color intensity based on volume
+                rectObj.fillColor = `rgb(${Math.min(255, volume * 3)}, 50, 100)`; 
+            }
+
+            // Continuously update the visualization
+            requestAnimationFrame(updateFromMic);
+        }
+
+        // Start updating the visualization
+        updateFromMic();
+    } catch (err) {
+        // Handle errors if microphone access is denied or unavailable
+        console.error("Microphone access denied!", err);
+    }
+}
+
+// Call the function to start microphone processing
+setupMicrophone();
+
 
     /** TASK 3:(Drawing Board C) - 
      *  1: Affect the free-style shape by input from the microphone somehow, in real time...
