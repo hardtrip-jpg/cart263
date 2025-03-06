@@ -1,5 +1,11 @@
 window.onload = go_all_stuff;
 
+
+// Declare globally so it's accessible in setupMicrophone()
+let rectObj; 
+
+let freestyleObj;
+
 function go_all_stuff() {
     console.log("go");
 
@@ -32,13 +38,15 @@ function go_all_stuff() {
 
     let drawingBoardB = new DrawingBoard(theCanvases[1], theContexts[1], theCanvases[1].id);
     //add a rectangular object to canvas B
-    drawingBoardB.addObj(new RectangularObj(100, 100, 50, 70, "#FF5733", "#E6E6FA", drawingBoardB.context))
+    rectObj = new RectangularObj(100, 100, 50, 70, "#FF5733", "#E6E6FA", drawingBoardB.context); 
+    drawingBoardB.addObj(rectObj);
     drawingBoardB.display();
 
 
     let drawingBoardC = new DrawingBoard(theCanvases[2], theContexts[2], theCanvases[2].id);
     //add a freestyle object to canvas C
-    drawingBoardC.addObj(new FreeStyleObj(10, 100, 300, "#CF9FFF", "#CF9FFF", drawingBoardC.context))
+    freestyleObj = new FreeStyleObj(10, 100, 300, "#CF9FFF", "#CF9FFF", drawingBoardC.context)
+    drawingBoardC.addObj(freestyleObj)
     drawingBoardC.display();
 
     let drawingBoardD = new DrawingBoard(theCanvases[3], theContexts[3], theCanvases[3].id);
@@ -82,6 +90,67 @@ function go_all_stuff() {
      *  
      */
 
+// Asynchronous function to initialize microphone input and process audio data
+async function setupMicrophone() {
+    try {
+        // Request access to the user's microphone
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        // Create an audio context for processing sound
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Create an analyser node to extract audio features
+        const analyser = audioContext.createAnalyser();
+        
+        // Create a media stream source from the microphone input
+        const source = audioContext.createMediaStreamSource(stream);
+        
+        // Connect the source to the analyser
+        source.connect(analyser);
+
+        // Set FFT (Fast Fourier Transform) size for frequency analysis
+        analyser.fftSize = 256;
+
+        // Create a buffer to store frequency data
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        // Function to continuously update the visualization based on microphone input
+        function updateFromMic() {
+            // Get frequency data from the analyser
+            analyser.getByteFrequencyData(dataArray);
+
+            // Compute the average volume level
+            let volume = dataArray.reduce((a, b) => a + b) / bufferLength;
+
+            // Modify the visual representation based on volume
+            if (rectObj) {
+                // Adjust width dynamically with volume
+                rectObj.width = 50 + volume * 2;  
+                
+                // Oscillate height slightly over time
+                rectObj.height = 70 + Math.sin(Date.now() * 0.005) * 10;  
+                
+                // Adjust color intensity based on volume
+                rectObj.fillColor = `rgb(${Math.min(255, volume * 3)}, 50, 100)`; 
+            }
+
+            // Continuously update the visualization
+            requestAnimationFrame(updateFromMic);
+        }
+
+        // Start updating the visualization
+        updateFromMic();
+    } catch (err) {
+        // Handle errors if microphone access is denied or unavailable
+        console.error("Microphone access denied!", err);
+    }
+}
+
+// Call the function to start microphone processing
+setupMicrophone();
+
+
     /** TASK 3:(Drawing Board C) - 
      *  1: Affect the free-style shape by input from the microphone somehow, in real time...
      *  at least two properties of the free-style shape need to update and change...
@@ -89,6 +158,67 @@ function go_all_stuff() {
      * -> the code for the microphone has NOT been added  - you need to implement it correctly...
      *  
      */
+
+    // get shape to change with microphone input
+
+    async function animateFreeform() {
+
+        try {
+            let audioStream = await navigator.mediaDevices.getUserMedia({ 
+                audio: true 
+            });
+            let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            let microphoneInput = audioContext.createMediaStreamSource(audioStream);
+            let analyser = audioContext.createAnalyser();
+            microphoneInput.connect(analyser);
+
+
+
+            analyser.fftSize = 256;
+            let bufferLength = analyser.frequencyBinCount;
+            let dataArray = new Uint8Array(bufferLength); 
+
+            function amplitude() {
+                analyser.getByteTimeDomainData(dataArray);
+                let sum = dataArray.reduce((acc, val) => acc + val, 0);
+                let avg = sum / bufferLength;
+                return avg;
+            }
+
+            function frequency() {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = dataArray.reduce((acc, val) => acc + val, 0);
+                let avg = sum / bufferLength;
+                return avg;
+            }
+
+            function updateFreeStyleObj() {
+                let amp = amplitude();
+                let freq = frequency();
+                freestyleObj.length = amp * 2;
+                freestyleObj.yOffset = freq;
+                freestyleObj.angularSpeed = freq / 100;
+                // change color based on frequency
+                let r = Math.floor(freq * 5);
+                let g = Math.floor(amp);
+                let b = Math.floor(freq * 2);
+                freestyleObj.fill_color = `rgb(${r}, ${g}, ${b})`;
+                freestyleObj.stroke_color = `rgb(${r}, ${g}, ${b})`;
+                
+                
+
+                requestAnimationFrame(updateFreeStyleObj);
+            }
+            updateFreeStyleObj();
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    animateFreeform();
+    
+    
 
     /** TASK 4:(Video - recorded - )
      * // add filters or manipulate the pixels... take user input from the boxes..

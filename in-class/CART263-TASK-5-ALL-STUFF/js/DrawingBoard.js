@@ -25,7 +25,7 @@ class DrawingBoard {
     //differentiate which canvas
     //you can remove the console.logs /// 
     if (this.drawingBoardId === "partA") {
-      console.log("in A");
+      console.log("in A")
     }
     if (this.drawingBoardId === "partB") {
       console.log("in B")
@@ -34,7 +34,9 @@ class DrawingBoard {
       console.log("in C")
     }
     if (this.drawingBoardId === "partD") {
+
       console.log("in D")
+      this.objectsOnCanvas[0].updatePositionRect(this.mouseOffsetX, this.mouseOffsetY);
     }
   }
 
@@ -43,6 +45,7 @@ class DrawingBoard {
     this.canvasBoundingRegion = this.canvas.getBoundingClientRect();
     this.mouseOffsetX = parseInt(e.clientX - this.canvasBoundingRegion.x);
     this.mouseOffsetY = parseInt(e.clientY - this.canvasBoundingRegion.y);
+    
     //console.log(this.mouseOffsetX, this.mouseOffsetY);
 
     //differentiate which canvas
@@ -63,6 +66,16 @@ class DrawingBoard {
     }
     if (this.drawingBoardId === "partD") {
       console.log("in D")
+        function getRandomColour() {
+        var letters = '0123456789ABCDEF';
+        var colour = '#';
+        for (let i = 0; i < 6; i++) {
+          colour += letters[Math.floor(Math.random() * 16)]
+        }
+        return colour;
+      }
+
+      this.objectsOnCanvas[0].changeColor(getRandomColour());
     }
   }
   /* method to add obj to canvas */
