@@ -4,7 +4,6 @@
     * implemeneted, as well as the proper mouseX and mouseY (NO need to add)
     * -> ensure that any properties that are changed by the circle object occur in the update method already provided,
     * and use the member properties provided (you may add new ones ... or not :)
-    * 
     * 2: add new circle objects (different sizes, positions, colors) to the canvas (board A) using some form of user interaction
     * 3: remove new circle objects from the canvas (board A) using some other form of user interaction 
     * Please for this exercise - do not add any new shapes other than the circular object...
@@ -23,8 +22,8 @@ class CircularObj {
     this.startAngle = 0;
     this.endAngle = Math.PI * 2; //full rotation
     this.context = context;
-    this.vx = 2;
-    this.vy = 2;
+    this.vx = 0.2;
+    this.vy = 0.2;
   }
 
   display() {
@@ -54,7 +53,7 @@ class CircularObj {
 
     if (this.x > this.context.canvas.width - this.radius || this.x < this.radius) this.vx *= -1;
     if (this.y > this.context.canvas.height - this.radius || this.y < this.radius) this.vy *= -1;
-
+    
     requestAnimationFrame(() => this.update());
 
   }
@@ -64,3 +63,6 @@ function animate() {
   // request another frame
   requestAnimationFrame(animate);
 }
+
+
+
