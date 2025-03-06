@@ -11,6 +11,7 @@ class VideoObj {
     this.shapeCol = "#000000";
 
 
+
     let filterButton_blur = document.getElementById("filter_button_blur");
     let blurInput = document.getElementById("blurnum");
     this.userProvidedBlur = 0;
@@ -71,13 +72,14 @@ class VideoObj {
   //called when rectangle color is to be updated
   changeColor(newCol) {
     /** FILL IN */
-    this.context.fillStyle = newCol;
+    this.shapeCol = newCol;
     console.log(newCol);
   }
   //called when rectangle Pos is to be updated
   updatePositionRect(mx, my) {
     /** FILL IN */
-    this.context.fillRect(this.shapeX, this.shapeY, mx, my);
+    this.shapeX = mx;
+    this.shapeY = my;
     console.log(mx, my);
   }
   update(videoElement) {
