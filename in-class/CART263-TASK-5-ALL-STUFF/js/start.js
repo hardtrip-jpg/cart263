@@ -4,6 +4,8 @@ window.onload = go_all_stuff;
 // Declare globally so it's accessible in setupMicrophone()
 let rectObj; 
 
+let freestyleObj;
+
 function go_all_stuff() {
     console.log("go");
 
@@ -42,7 +44,8 @@ function go_all_stuff() {
 
     let drawingBoardC = new DrawingBoard(theCanvases[2], theContexts[2], theCanvases[2].id);
     //add a freestyle object to canvas C
-    drawingBoardC.addObj(new FreeStyleObj(10, 100, 300, "#CF9FFF", "#CF9FFF", drawingBoardC.context))
+    freestyleObj = new FreeStyleObj(10, 100, 300, "#CF9FFF", "#CF9FFF", drawingBoardC.context)
+    drawingBoardC.addObj(freestyleObj)
     drawingBoardC.display();
 
     let drawingBoardD = new DrawingBoard(theCanvases[3], theContexts[3], theCanvases[3].id);
@@ -154,6 +157,67 @@ setupMicrophone();
      * -> the code for the microphone has NOT been added  - you need to implement it correctly...
      *  
      */
+
+    // get shape to change with microphone input
+
+    async function animateFreeform() {
+
+        try {
+            let audioStream = await navigator.mediaDevices.getUserMedia({ 
+                audio: true 
+            });
+            let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            let microphoneInput = audioContext.createMediaStreamSource(audioStream);
+            let analyser = audioContext.createAnalyser();
+            microphoneInput.connect(analyser);
+
+
+
+            analyser.fftSize = 256;
+            let bufferLength = analyser.frequencyBinCount;
+            let dataArray = new Uint8Array(bufferLength); 
+
+            function amplitude() {
+                analyser.getByteTimeDomainData(dataArray);
+                let sum = dataArray.reduce((acc, val) => acc + val, 0);
+                let avg = sum / bufferLength;
+                return avg;
+            }
+
+            function frequency() {
+                analyser.getByteFrequencyData(dataArray);
+                let sum = dataArray.reduce((acc, val) => acc + val, 0);
+                let avg = sum / bufferLength;
+                return avg;
+            }
+
+            function updateFreeStyleObj() {
+                let amp = amplitude();
+                let freq = frequency();
+                freestyleObj.length = amp * 2;
+                freestyleObj.yOffset = freq;
+                freestyleObj.angularSpeed = freq / 100;
+                // change color based on frequency
+                let r = Math.floor(freq * 5);
+                let g = Math.floor(amp);
+                let b = Math.floor(freq * 2);
+                freestyleObj.fill_color = `rgb(${r}, ${g}, ${b})`;
+                freestyleObj.stroke_color = `rgb(${r}, ${g}, ${b})`;
+                
+                
+
+                requestAnimationFrame(updateFreeStyleObj);
+            }
+            updateFreeStyleObj();
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    animateFreeform();
+    
+    
 
     /** TASK 4:(Video - recorded - )
      * // add filters or manipulate the pixels... take user input from the boxes..
