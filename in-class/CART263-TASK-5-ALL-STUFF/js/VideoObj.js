@@ -47,14 +47,20 @@ class VideoObj {
       self.userProvidedHue = hueInput.value;
       console.log(self.userProvidedHue);
     })
+
+    filterButton_invert.addEventListener("click", function () {
+      //get value from input field
+      self.userProvidedInvert = invertInput.value * 10;
+      console.log(self.userProvidedInvert);
+    })
   }
 
   display() {
     this.context.save();
 
     //Filter Apply
-    this.context.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}) hue-rotate(${this.userProvidedHue}deg)`;
-    this.videoElement.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}) hue-rotate(${this.userProvidedHue}deg)`;
+    this.context.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}) hue-rotate(${this.userProvidedHue}deg) invert(${this.userProvidedInvert}%)`;
+    this.videoElement.filter = `blur(${this.userProvidedBlur}px) sepia(${this.userProvidedSepia}) hue-rotate(${this.userProvidedHue}deg) invert(${this.userProvidedInvert}%)`;
 
     this.context.drawImage(this.videoElement, this.x, this.y, this.w, this.h);
     this.context.fillStyle = this.shapeCol;
@@ -65,10 +71,14 @@ class VideoObj {
   //called when rectangle color is to be updated
   changeColor(newCol) {
     /** FILL IN */
+    this.context.fillStyle = newCol;
+    console.log(newCol);
   }
   //called when rectangle Pos is to be updated
   updatePositionRect(mx, my) {
     /** FILL IN */
+    this.context.fillRect(this.shapeX, this.shapeY, mx, my);
+    console.log(mx, my);
   }
   update(videoElement) {
     this.videoElement = videoElement;
