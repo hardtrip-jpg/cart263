@@ -9,6 +9,9 @@ function run() {
     console.log("in fetch");
     let raw_rainbow_text = "";
     try {
+      let response = await fetch("../files/rainbow.txt");
+      let data = await response.text();
+      
      
       document.querySelector("#resetButton").addEventListener("click", resetPoem);
       runPartB(raw_rainbow_text);
